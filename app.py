@@ -11,10 +11,10 @@ st.set_page_config(page_title="Thérapeute du Travail Virtuel", page_icon="🧠"
 st.image("logo.png", width=200)
 
 # Titre et description
-st.title("Bienvenue chez votre Thérapeute du Travail Virtuel 🧠")
+st.title("Moi c'est Audrey - votre Thérapeute du Travail Virtuel")
 st.write("""
 Un espace d'écoute, de réflexion et de soutien pour votre développement personnel et professionnel. 
-Posez vos questions librement, en toute bienveillance.
+Posez vos questions librement, en toute bienveillance. Je ferai le maximum pour vous aider.
 """)
 
 # Champ de saisie
