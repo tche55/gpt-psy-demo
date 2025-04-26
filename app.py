@@ -41,11 +41,12 @@ st.markdown(
     <div style='text-align: center;'>
         <img src="https://raw.githubusercontent.com/tche55/gpt-psy-demo/main/logo.png" 
              width="180" 
-             style="border-radius: 50%; object-fit: cover; height: 180px; width: 180px;">
+             style="border-radius: 50%; object-fit: cover; object-position: center top; height: 180px; width: 180px;">
     </div>
     """,
     unsafe_allow_html=True
 )
+
 
 
 # Zone principale
