@@ -62,11 +62,11 @@ st.markdown(
 )
 
 # Titre
-st.title("Audrey - votre PSY du travail")
+st.title("Audrey - votre PSY - à votre écoute")
 st.markdown("---")
 st.write("""
 Un espace d'écoute, de réflexion et de soutien pour votre développement personnel et professionnel. 
-Posez vos questions librement, en toute bienveillance. Je ferai le maximum pour vous aider.
+Posez vos questions librement ADRIEN, en toute bienveillance. Je ferai le maximum pour vous aider.
 """)
 
 # Affichage de la conversation
