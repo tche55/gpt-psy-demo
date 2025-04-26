@@ -1,13 +1,13 @@
 import streamlit as st
-import openai
+from openai import OpenAI
 
-# Récupération sécurisée de la clé OpenAI depuis Streamlit Secrets
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+# Récupération sécurisée de la clé API
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 # Configuration de la page
 st.set_page_config(page_title="Thérapeute du Travail Virtuel", page_icon="🧠")
 
-# Afficher le logo (assure-toi que logo.png est dans le même dossier)
+# Afficher le logo
 st.image("logo.png", width=200)
 
 # Titre et description
@@ -17,15 +17,15 @@ Un espace d'écoute, de réflexion et de soutien pour votre développement perso
 Posez vos questions librement, en toute bienveillance.
 """)
 
-# Champ de saisie pour poser une question
+# Champ de saisie
 prompt = st.text_area("Exprimez ici vos préoccupations, doutes ou envies de réflexion :", "")
 
 # Action au clic
 if st.button("Envoyer"):
     if prompt:
         with st.spinner("Le thérapeute réfléchit avec vous..."):
-            response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",  # <<< Test actuel en GPT-3.5 Turbo
+            response = client.chat.completions.create(
+                model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": """
 Tu es un thérapeute virtuel fictif, expert en psychologie du travail et en développement personnel, conçu pour accompagner les utilisateurs dans leur réflexion autour de leur vie professionnelle, leur épanouissement personnel et leurs défis de carrière. 
@@ -70,7 +70,7 @@ Ton objectif est d'accompagner, de rassurer, de stimuler la réflexion construct
                 max_tokens=700
             )
 
-            message = response['choices'][0]['message']['content']
+            message = response.choices[0].message.content
             st.success(message)
     else:
         st.error("Merci de saisir un message avant d'envoyer.")
