@@ -4,36 +4,18 @@ from openai import OpenAI
 # Récupération sécurisée de la clé API
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
-# Configuration de la page
-st.set_page_config(page_title="Thérapeute du Travail Virtuel", page_icon="🧠")
+# Page configuration
+st.set_page_config(page_title="Audrey - votre Thérapeute du Travail", page_icon="🧠")
 
-# Personnalisation du style avec CSS
-st.markdown(
-    """
-    <style>
-    body {
-        background-color: #f5f7fa;
-    }
-    .main {
-        background-color: white;
-        padding: 2rem;
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        max-width: 700px;
-        margin: auto;
-    }
-    textarea, input[type="text"], input[type="submit"], button {
-        border-radius: 10px;
-    }
-    button[kind="primary"] {
-        border-radius: 10px;
-        background-color: #4CAF50;
-        color: white;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+# Initialiser la conversation si elle n'existe pas
+if "messages" not in st.session_state:
+    st.session_state.messages = [
+        {"role": "system", "content": """
+Tu es Audrey, une thérapeute du travail fictive, bienveillante, calme et professionnelle. 
+Tu aides les utilisateurs à travers leurs défis professionnels, carrière, stress, relations au travail et épanouissement personnel.
+Réponds toujours en français, de manière positive, chaleureuse et respectueuse.
+"""}
+    ]
 
 # Afficher le logo centré
 st.markdown(
@@ -47,51 +29,38 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Initialisation de session_state
-if "prompt" not in st.session_state:
-    st.session_state.prompt = ""
-if "response" not in st.session_state:
-    st.session_state.response = None
+# Titre
+st.title("Audrey - votre PSY du travail")
+st.markdown("---")
+st.write("""
+Un espace d'écoute, de réflexion et de soutien pour votre développement personnel et professionnel. 
+Posez vos questions librement, en toute bienveillance. Je ferai le maximum pour vous aider.
+""")
 
-# Zone principale
-with st.container():
-    st.title("Audrey - votre PSY du travail")
-    st.markdown("---")
+# Affichage de la conversation
+for message in st.session_state.messages[1:]:  # On saute le "system" pour l'affichage
+    with st.chat_message(message["role"]):
+        st.write(message["content"])
 
-    st.write("""
-    Un espace d'écoute, de réflexion et de soutien pour votre développement personnel et professionnel. 
-    Posez vos questions librement, en toute bienveillance. Je ferai le maximum pour vous aider.
-    """)
+# Champ de saisie en bas
+user_input = st.chat_input("Exprimez votre ressenti, une question, un doute...")
 
-    # Champ de saisie
-    st.text_area(
-        "Exprimez ici vos préoccupations, doutes ou envies de réflexion :",
-        key="prompt"
-    )
+if user_input:
+    # Ajouter la question de l'utilisateur
+    st.session_state.messages.append({"role": "user", "content": user_input})
 
-    if st.button("Envoyer"):
-        if st.session_state.prompt.strip():
-            with st.spinner("Le thérapeute réfléchit avec vous..."):
-                response = client.chat.completions.create(
-                    model="gpt-3.5-turbo",
-                    messages=[
-                        {"role": "system", "content": """
-Tu es un thérapeute virtuel fictif, expert en psychologie du travail et en développement personnel, conçu pour accompagner les utilisateurs dans leur réflexion autour de leur vie professionnelle, leur épanouissement personnel et leurs défis de carrière.
-Toutes tes réponses doivent être rédigées en français, avec un ton bienveillant, respectueux, calme et encourageant.
-"""}
-                        ,
-                        {"role": "user", "content": st.session_state.prompt}
-                    ],
-                    max_tokens=700
-                )
-                st.session_state.response = response.choices[0].message.content
+    # Appel à OpenAI
+    with st.spinner("Audrey réfléchit à votre situation..."):
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=st.session_state.messages,
+            max_tokens=700
+        )
+        assistant_message = response.choices[0].message.content
 
-            # Reset du prompt et rafraîchissement de la page
-            st.session_state.prompt = ""
-            st.experimental_rerun()
-        else:
-            st.error("Merci de saisir un message avant d'envoyer.")
+    # Ajouter la réponse de l'assistant
+    st.session_state.messages.append({"role": "assistant", "content": assistant_message})
 
-# Affichage de la réponse s'il y en a une
-if st.session_state.response:
-    st.success(st.session_state.response)
+    # Afficher la réponse tout de suite
+    with st.chat_message("assistant"):
+        st.write(assistant_message)
