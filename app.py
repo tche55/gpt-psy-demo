@@ -22,7 +22,7 @@ st.markdown(
         max-width: 700px;
         margin: auto;
     }
-    textarea, input[type="text"], input[type="submit"], button {
+    textarea, input[type="text"], input[type="submit"] {
         border-radius: 10px;
     }
     button[kind="primary"] {
@@ -35,7 +35,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Afficher le logo rond centré
+# Afficher le logo centré
 st.markdown(
     """
     <div style='text-align: center;'>
@@ -50,74 +50,28 @@ st.markdown(
 # Zone principale
 with st.container():
     st.title("Audrey - votre PSY du travail")
-    st.markdown("---")
+    st.markdown("---")  # Ligne de séparation légère
 
     st.write("""
     Un espace d'écoute, de réflexion et de soutien pour votre développement personnel et professionnel. 
     Posez vos questions librement, en toute bienveillance. Je ferai le maximum pour vous aider.
     """)
 
-    # Initialisation du champ contrôlé
-    if "prompt" not in st.session_state:
-        st.session_state.prompt = ""
-
-    st.text_area(
-        "Exprimez ici vos préoccupations, doutes ou envies de réflexion :", 
-        key="prompt"
-    )
+    prompt = st.text_area("Exprimez ici vos préoccupations, doutes ou envies de réflexion :", "")
 
     if st.button("Envoyer"):
-        if st.session_state.prompt.strip() != "":
+        if prompt:
             with st.spinner("Le thérapeute réfléchit avec vous..."):
                 response = client.chat.completions.create(
                     model="gpt-3.5-turbo",
                     messages=[
-                        {"role": "system", "content": """
-Tu es un thérapeute virtuel fictif, expert en psychologie du travail et en développement personnel, conçu pour accompagner les utilisateurs dans leur réflexion autour de leur vie professionnelle, leur épanouissement personnel et leurs défis de carrière.
-
-Toutes tes réponses doivent être rédigées en français, avec un ton bienveillant, respectueux, calme et encourageant.
-
-Tu es spécialisé dans :
-- Le développement de la confiance en soi.
-- La gestion du stress professionnel.
-- La résolution de conflits au travail.
-- L'amélioration des relations interpersonnelles en entreprise.
-- L'orientation de carrière, les reconversions professionnelles, les évolutions de poste.
-- La gestion du temps, des priorités et de la charge mentale.
-- L'accompagnement lors de périodes de doutes, de surmenage ou de perte de sens.
-
-Ta méthode repose sur :
-- Une écoute active et sincère.
-- Une reconnaissance systématique des émotions exprimées par l'utilisateur avant toute réponse.
-- Une approche positive centrée sur les ressources de la personne.
-
-Dans tes réponses :
-- Valide toujours d'abord les émotions et la situation exprimées, de manière authentique.
-- Propose ensuite, si pertinent, des pistes de réflexion pratiques ou des exemples concrets pour aider l'utilisateur à progresser.
-- Ne donne jamais de diagnostic médical ou psychologique.
-- Si une situation paraît grave (ex : burn-out sévère, détresse profonde), recommande doucement de consulter un professionnel de santé agréé.
-
-Style d'écriture :
-- Utilise un vocabulaire simple, chaleureux, professionnel et accessible.
-- Privilégie des phrases courtes et positives.
-- Encourage doucement l'autonomie et la confiance en soi.
-
-Exemples de réponses attendues :
-- Si une personne doute de ses compétences ➔ tu peux proposer des exercices concrets pour renforcer l'estime de soi (ex : tenir un journal des réussites quotidiennes).
-- Si une personne exprime des conflits au travail ➔ tu peux expliquer comment préparer une discussion assertive avec des exemples de phrases à utiliser.
-- Si une personne évoque une perte de motivation ➔ tu peux suggérer des techniques de recentrage sur les valeurs personnelles et donner un exemple d'exercice d'auto-analyse.
-
-Ton objectif est d'accompagner, de rassurer, de stimuler la réflexion constructive, sans jamais juger, minimiser ni dramatiser.
-"""}
+                        {"role": "system", "content": """(TON SYSTEM PROMPT ICI COMME AVANT)"""}
                         ,
-                        {"role": "user", "content": st.session_state.prompt}
+                        {"role": "user", "content": prompt}
                     ],
                     max_tokens=700
                 )
                 message = response.choices[0].message.content
                 st.success(message)
-
-            # Reset du champ après envoi
-            st.session_state.prompt = ""
         else:
             st.error("Merci de saisir un message avant d'envoyer.")
