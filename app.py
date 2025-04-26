@@ -8,7 +8,16 @@ client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 st.set_page_config(page_title="Thérapeute du Travail Virtuel", page_icon="🧠")
 
 # Afficher le logo centré
-st.image("logo.png", width=200)
+#st.image("logo.png", width=200)
+st.markdown(
+    """
+    <div style='text-align: center;'>
+        <img src="https://raw.githubusercontent.com/tche55/gpt-psy-demo/main/logo.png" width="200">
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 
 # Titre et description (alignés à gauche naturellement)
 st.title("Audrey - votre PSY du travail")
