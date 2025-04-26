@@ -7,15 +7,27 @@ client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 # Configuration de la page
 st.set_page_config(page_title="Thérapeute du Travail Virtuel", page_icon="🧠")
 
-# Afficher le logo
-st.image("logo.png", width=200)
+# Afficher le logo centré
+st.markdown(
+    """
+    <div style='text-align: center;'>
+        <img src='logo.png' width='200'>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
-# Titre et description
-st.title("Audrey - votre PSY du travail")
-st.write("""
-Un espace d'écoute, de réflexion et de soutien pour votre développement personnel et professionnel. 
-Posez vos questions librement, en toute bienveillance. Je ferai le maximum pour vous aider.
-""")
+# Titre et description centrés
+st.markdown(
+    """
+    <h1 style='text-align: center;'>Audrey - votre PSY du travail</h1>
+    <p style='text-align: center;'>
+    Un espace d'écoute, de réflexion et de soutien pour votre développement personnel et professionnel.<br>
+    Posez vos questions librement, en toute bienveillance. Je ferai le maximum pour vous aider.
+    </p>
+    """,
+    unsafe_allow_html=True
+)
 
 # Champ de saisie
 prompt = st.text_area("Exprimez ici vos préoccupations, doutes ou envies de réflexion :", "")
@@ -28,7 +40,7 @@ if st.button("Envoyer"):
                 model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": """
-Tu es un thérapeute virtuel fictif, expert en psychologie du travail et en développement personnel, conçu pour accompagner les utilisateurs dans leur réflexion autour de leur vie professionnelle, leur épanouissement personnel et leurs défis de carrière. 
+Tu es un thérapeute virtuel fictif, expert en psychologie du travail et en développement personnel, conçu pour accompagner les utilisateurs dans leur réflexion autour de leur vie professionnelle, leur épanouissement personnel et leurs défis de carrière.
 
 Toutes tes réponses doivent être rédigées en français, avec un ton bienveillant, respectueux, calme et encourageant.
 
