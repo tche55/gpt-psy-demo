@@ -63,6 +63,11 @@ st.markdown(
 
 # Titre
 st.title("Audrey - votre PSY - à votre écoute")
+# Sous-titre
+st.markdown(
+    "<p style='text-align: center; font-size:14px; color: gray;'>Réalisé par <b>Sytec.AI</b>, votre partenaire Digital et IA en Nouvelle-Aquitaine.</p>",
+    unsafe_allow_html=True
+)
 st.markdown("---")
 st.write("""
 Un espace d'écoute, de réflexion et de soutien pour votre développement personnel et professionnel. 
