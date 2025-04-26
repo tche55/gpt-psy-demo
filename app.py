@@ -61,8 +61,14 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Titre
-st.title("Audrey - votre PSY")
+# Titre centré
+st.markdown(
+    """
+    <h1 style='text-align: center;'>Audrey - votre PSY</h1>
+    """,
+    unsafe_allow_html=True
+)
+
 # Sous-titre
 st.markdown(
     "<p style='text-align: center; font-size:14px; color: gray;'>Réalisé par <b>SYTEC</b>, votre partenaire Digital et IA en Nouvelle-Aquitaine.</p>",
@@ -71,7 +77,7 @@ st.markdown(
 st.markdown("---")
 st.write("""
 Un espace d'écoute, de réflexion et de soutien pour votre développement personnel et professionnel. 
-Posez vos questions librement <b>ADRIEN</b>, en toute bienveillance. Je ferai le maximum pour vous aider.
+Posez vos questions librement ADRIEN, en toute bienveillance. Je ferai le maximum pour vous aider.
 """)
 
 # Affichage de la conversation
