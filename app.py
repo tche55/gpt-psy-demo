@@ -50,31 +50,33 @@ st.markdown(
 # Zone principale
 with st.container():
     st.title("Audrey - votre PSY du travail")
-    st.markdown("---")  # Ligne de séparation légère
+    st.markdown("---")
 
     st.write("""
     Un espace d'écoute, de réflexion et de soutien pour votre développement personnel et professionnel. 
     Posez vos questions librement, en toute bienveillance. Je ferai le maximum pour vous aider.
     """)
 
-    # Initialiser le champ contrôlé dans la session
+    # Initialiser la session_state si elle n'existe pas
     if "prompt" not in st.session_state:
         st.session_state.prompt = ""
 
-    # Champ de saisie lié à session_state
-    st.text_area(
-        "Exprimez ici vos préoccupations, doutes ou envies de réflexion :", 
+    # Champ de texte contrôlé
+    prompt = st.text_area(
+        "Exprimez ici vos préoccupations, doutes ou envies de réflexion :",
+        value=st.session_state.prompt,
         key="prompt"
     )
 
-    # Gestion du clic sur Envoyer
-    if st.button("Envoyer"):
-        if st.session_state.prompt.strip():
-            with st.spinner("Le thérapeute réfléchit avec vous..."):
-                response = client.chat.completions.create(
-                    model="gpt-3.5-turbo",
-                    messages=[
-                        {"role": "system", "content": """
+    # Bouton envoyer
+    envoyer = st.button("Envoyer")
+
+    if envoyer and st.session_state.prompt.strip():
+        with st.spinner("Le thérapeute réfléchit avec vous..."):
+            response = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": """
 Tu es un thérapeute virtuel fictif, expert en psychologie du travail et en développement personnel, conçu pour accompagner les utilisateurs dans leur réflexion autour de leur vie professionnelle, leur épanouissement personnel et leurs défis de carrière.
 
 Toutes tes réponses doivent être rédigées en français, avec un ton bienveillant, respectueux, calme et encourageant.
@@ -111,15 +113,16 @@ Exemples de réponses attendues :
 
 Ton objectif est d'accompagner, de rassurer, de stimuler la réflexion constructive, sans jamais juger, minimiser ni dramatiser.
 """}
-                        ,
-                        {"role": "user", "content": st.session_state.prompt}
-                    ],
-                    max_tokens=700
-                )
-                message = response.choices[0].message.content
-                st.success(message)
+                    ,
+                    {"role": "user", "content": st.session_state.prompt}
+                ],
+                max_tokens=700
+            )
+            message = response.choices[0].message.content
+            st.success(message)
 
-            # Vider le champ de saisie après envoi
-            st.session_state.prompt = ""
-        else:
-            st.error("Merci de saisir un message avant d'envoyer.")
+        # Remettre prompt à vide sans casser Streamlit
+        st.session_state.update(prompt="")
+
+    elif envoyer:
+        st.error("Merci de saisir un message avant d'envoyer.")
