@@ -75,10 +75,14 @@ st.markdown(
     unsafe_allow_html=True
 )
 st.markdown("---")
-st.write("""
-Un espace d'écoute, de réflexion et de soutien pour votre développement personnel et professionnel. 
-Posez vos questions librement ADRIEN, en toute bienveillance. Je ferai le maximum pour vous aider.
-""")
+
+st.markdown(
+    """
+    Un espace d'écoute, de réflexion et de soutien pour votre développement personnel et professionnel. 
+    Posez vos questions librement <b>ADRIEN</b>, en toute bienveillance. Je ferai le maximum pour vous aider.
+    """,
+    unsafe_allow_html=True
+)
 
 # Affichage de la conversation
 for message in st.session_state.messages[1:]:  # Ne pas afficher le system message
