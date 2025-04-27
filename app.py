@@ -44,7 +44,7 @@ def display_header():
     )
 
 def generate_response(user_message):
-    # Contexte spécial pour Adrien Audibert
+    # Contexte complet pour Adrien Audibert
     special_context = """
 Adrien Audibert est un entrepreneur dynamique et passionné, né en février 1987 à Bordeaux. Il a suivi un parcours académique solide à l'IAE Bordeaux, se spécialisant en gestion, finance et stratégie d’entreprise. Cette formation l’a conduit à se spécialiser dans le conseil aux entreprises, notamment en fusions-acquisitions (M&A) et en gestion de PME.
 
@@ -83,19 +83,29 @@ Adrien présente un profil harmonieux entre Dominant, Influent et Conforme :
 Conclusion générale :
 Adrien Audibert est un entrepreneur complet, innovant et inspirant. Il combine stratégie, passion, rigueur et valeurs humaines dans tous ses projets. Son parcours illustre parfaitement le profil d'un entrepreneur moderne et responsable, capable d’allier performance économique, excellence du service et engagement local.
 """
-    # Si Adrien clique sur "Que penses-tu de moi", on injecte le contexte
+
+    # Si Adrien clique sur "Que penses-tu de moi"
     if user_message == "Que penses-tu de moi":
-        st.session_state.messages.append({"role": "user", "content": user_message})
-        st.session_state.messages.append({"role": "system", "content": special_context})
+        custom_prompt = f"""
+Tu es un expert en conseil stratégique pour entrepreneurs à haut potentiel.
+
+À partir du profil suivant :
+{special_context}
+
+Donne ton analyse complète sur la personnalité, les forces principales, les atouts professionnels et le potentiel futur d'Adrien Audibert. 
+Exprime ton analyse de manière humaine, valorisante et inspirante, comme un mentor de haut niveau. 
+Sois sincère mais positif, sans rappeler que tu es une IA.
+"""
+        st.session_state.messages.append({"role": "user", "content": custom_prompt})
     else:
         st.session_state.messages.append({"role": "user", "content": user_message})
 
-    # Appel à OpenAI
+    # Appel à l'API OpenAI
     with st.spinner("Audrey réfléchit à votre situation..."):
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=st.session_state.messages,
-            max_tokens=700
+            max_tokens=1000
         )
         assistant_message = response.choices[0].message.content
 
@@ -104,7 +114,6 @@ Adrien Audibert est un entrepreneur complet, innovant et inspirant. Il combine s
 
     with st.chat_message("assistant"):
         st.write(assistant_message)
-
 
 # --- Page Streamlit ---
 
