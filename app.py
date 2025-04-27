@@ -58,12 +58,13 @@ st.markdown(
             justify-content: center;
             background: #f0f0f0;">
             <img src="https://raw.githubusercontent.com/tche55/gpt-psy-demo/main/logo.png"
-                 style="width: 200px; height: auto; object-fit: cover; object-position: center;">
+                 style="width: 200px; height: auto; object-fit: cover; object-position: center top;">
         </div>
     </div>
     """,
     unsafe_allow_html=True
 )
+
 
 
 # Titre centré
