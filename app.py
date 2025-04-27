@@ -80,18 +80,17 @@ for message in st.session_state.messages[1:]:
     with st.chat_message(message["role"]):
         st.write(message["content"])
 
-# --- Boutons pré-écrits ---
-st.markdown("### Besoin d'inspiration ?")
-col1, col2 = st.columns(2)
+# --- Afficher les boutons SEULEMENT si aucune question n'a encore été posée ---
+if len(st.session_state.messages) <= 1:
+    st.markdown("### Besoin d'inspiration ?")
+    col1, col2 = st.columns(2)
 
-with col1:
-    if st.button("😟 Je suis stressé au travail"):
-        generate_response("Je suis stressé au travail")
-        
-with col2:
-    if st.button("😞 Je manque de motivation"):
-        generate_response("Je manque de motivation")
-
+    with col1:
+        if st.button("😟 Je suis stressé au travail"):
+            generate_response("Je suis stressé au travail")
+    with col2:
+        if st.button("😞 Je manque de motivation"):
+            generate_response("Je manque de motivation")
 st.markdown("---")
 
 # --- Champ de saisie libre ---
