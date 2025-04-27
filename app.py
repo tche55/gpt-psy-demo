@@ -71,7 +71,18 @@ def inject_custom_css():
         """,
         unsafe_allow_html=True
     )
-
+def inject_custom_js():
+    st.markdown(
+        """
+        <script>
+        window.onload = function() {
+            window.scrollTo(0, 0);
+        };
+        </script>
+        """,
+        unsafe_allow_html=True
+    )
+    
 def display_header():
     st.markdown(
         """
@@ -103,6 +114,7 @@ def generate_response(user_message):
 # --- Page Streamlit ---
 
 inject_custom_css()
+inject_custom_js()
 display_header()
 
 st.markdown("---")
