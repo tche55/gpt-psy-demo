@@ -83,7 +83,7 @@ for message in st.session_state.messages[1:]:
 # --- Afficher les boutons SEULEMENT si aucune question n'a encore été posée ---
 if len(st.session_state.messages) <= 1:
     st.markdown("### Besoin d'inspiration ?")
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
         if st.button("😟 Je suis stressé au travail"):
@@ -91,6 +91,10 @@ if len(st.session_state.messages) <= 1:
     with col2:
         if st.button("😞 Je manque de motivation"):
             generate_response("Je manque de motivation")
+    with col3:
+        if st.button("🤔 Que penses-tu de moi"):
+            generate_response("Que penses-tu de moi")
+
 st.markdown("---")
 
 # --- Champ de saisie libre ---
