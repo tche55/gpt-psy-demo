@@ -44,72 +44,16 @@ def display_header():
     )
 
 def generate_response(user_message):
-    # Contexte complet pour Adrien Audibert
-    special_context = """
-Adrien Audibert est un entrepreneur dynamique et passionné, né en février 1987 à Bordeaux. Il a suivi un parcours académique solide à l'IAE Bordeaux, se spécialisant en gestion, finance et stratégie d’entreprise. Cette formation l’a conduit à se spécialiser dans le conseil aux entreprises, notamment en fusions-acquisitions (M&A) et en gestion de PME.
+    st.session_state.messages.append({"role": "user", "content": user_message})
 
-Dès le début de sa carrière, Adrien Audibert a démontré un fort esprit d’initiative et une grande compréhension des enjeux des dirigeants d’entreprise. Il a travaillé chez TRANS-MISSIONS Falières & Associés, un cabinet de conseil en transmission d’entreprises à Bordeaux, où il a accompagné de nombreux chefs d'entreprise dans des projets de cession, d’acquisition ou de développement.
-
-En 2020, Adrien fonde Audibert & Co, société innovante développée autour de deux activités principales :
-- Conseil en gestion et en stratégie d’entreprise : accompagnement personnalisé de PME et d’ETI pour leur croissance, leur transmission, leur structuration ou leur optimisation.
-- Négoce d’automobiles d’exception : recherche, achat, vente et location de véhicules de prestige (voitures de sport, voitures de collection, bateaux, avions), avec une approche sur-mesure et discrète.
-
-Audibert & Co est basée au 21 avenue Carnot, 33200 Bordeaux (immatriculée sous le SIREN 879854354, code APE 7022Z).
-
-Adrien Audibert est également à l’initiative d'un projet innovant de « garage 2.0 » mêlant univers automobile et gastronomie, en collaboration avec Nicolas Leroy-Fleuriot (ancien président de Cheops Technology). Ce lieu hybride proposera l'entretien de véhicules d'exception et un restaurant haut de gamme au milieu des voitures de collection. Ce concept suscite déjà un fort intérêt régional.
-
-Expertise et réseau :
-Adrien est reconnu pour son expertise en conseil stratégique, gestion de projets complexes et négociation. Il dispose d'une connaissance approfondie du tissu économique bordelais et du marché de l’automobile de luxe. Son réseau professionnel compte plus de 500 relations LinkedIn, avec une présence active sur Viadeo et GoToTheGrid. Il intervient fréquemment lors de conférences et d’ateliers sur des thématiques telles que la transmission d’entreprise, le management et l’innovation.
-
-Informations administratives :
-- Nom complet : Adrien Audibert
-- Date de naissance : Février 1987
-- Nationalité : Française
-- Adresse professionnelle : 21 avenue Carnot, 33200 Bordeaux
-- Société principale : Audibert & Co (SIREN 879854354)
-- Activités : Conseil en gestion, négoce automobile, location, entretien de véhicules
-- Mandats : Plusieurs mandats de direction liés à l’automobile et au conseil
-
-Réputation et valeurs :
-Adrien Audibert est apprécié pour son professionnalisme, sa discrétion et sa capacité à bâtir des relations de confiance durables. Il incarne des valeurs fortes d’exigence, de transparence, d'innovation et reste fidèle à ses racines bordelaises.
-
-Analyse comportementale DISC :
-Adrien présente un profil harmonieux entre Dominant, Influent et Conforme :
-- 🔴 Dominant (D) : Leadership affirmé, esprit d'initiative, forte capacité à concrétiser des projets.
-- 🟡 Influent (I) : Charisme naturel, aisance relationnelle, réseau professionnel étendu, interventions régulières en public.
-- 🔵 Conforme (C) : Rigueur professionnelle, attention aux détails, prestations de haute qualité.
-- 🟢 Stable (S) : Engagement local, fidélité à sa région et à ses passions, implication dans des projets régionaux.
-
-Conclusion générale :
-Adrien Audibert est un entrepreneur complet, innovant et inspirant. Il combine stratégie, passion, rigueur et valeurs humaines dans tous ses projets. Son parcours illustre parfaitement le profil d'un entrepreneur moderne et responsable, capable d’allier performance économique, excellence du service et engagement local.
-"""
-
-    # Si Adrien clique sur "Que penses-tu de moi"
-    if user_message == "Que penses-tu de moi":
-        custom_prompt = f"""
-Tu es un expert en conseil stratégique pour entrepreneurs à haut potentiel.
-
-À partir du profil suivant :
-{special_context}
-
-Donne ton analyse complète sur la personnalité, les forces principales, les atouts professionnels et le potentiel futur d'Adrien Audibert. 
-Exprime ton analyse de manière humaine, valorisante et inspirante, comme un mentor de haut niveau. 
-Sois sincère mais positif, sans rappeler que tu es une IA.
-"""
-        st.session_state.messages.append({"role": "user", "content": custom_prompt})
-    else:
-        st.session_state.messages.append({"role": "user", "content": user_message})
-
-    # Appel à l'API OpenAI
     with st.spinner("Audrey réfléchit à votre situation..."):
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=st.session_state.messages,
-            max_tokens=1000
+            max_tokens=700
         )
         assistant_message = response.choices[0].message.content
 
-    # Enregistrement de la réponse
     st.session_state.messages.append({"role": "assistant", "content": assistant_message})
 
     with st.chat_message("assistant"):
