@@ -48,17 +48,15 @@ st.markdown(
     """
     <div style='text-align: center;'>
         <div style="
-            width: 160px;
-            height: 160px;
+            width: 180px;
+            height: 180px;
             overflow: hidden;
             border-radius: 50%;
             margin: auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: relative;
             background: #f0f0f0;">
             <img src="https://raw.githubusercontent.com/tche55/gpt-psy-demo/main/logo.png"
-                 style="width: 200px; height: auto; object-fit: cover; object-position: center top;">
+                 style="width: 180px; height: auto; object-fit: cover; position: absolute; top: -40px;">
         </div>
     </div>
     """,
