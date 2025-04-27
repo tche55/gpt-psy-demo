@@ -92,8 +92,8 @@ if len(st.session_state.messages) <= 1:
         if st.button("😞 Je manque de motivation"):
             generate_response("Je manque de motivation")
     with col3:
-        if st.button("🤔 Que penses-tu de moi"):
-            generate_response("Que penses-tu de moi")
+        if st.button("🤔 Que penses-tu de moi ?"):
+            generate_response("Que penses-tu de moi ?")
 
 st.markdown("---")
 
