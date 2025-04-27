@@ -5,93 +5,102 @@ from openai import OpenAI
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 # Configuration de la page
-st.set_page_config(page_title="Thérapeute du Travail Virtuel", page_icon="🧠")
+st.set_page_config(page_title="Audrey - votre Thérapeute du Travail", page_icon="🧠")
 
-# Personnalisation du style avec CSS
+# Initialisation de la conversation
+if "messages" not in st.session_state:
+    st.session_state.messages = [
+        {"role": "system", "content": """
+Tu es un thérapeute virtuel fictif, expert en psychologie du travail et en développement personnel...
+(Tu peux remettre ici ton system prompt complet)
+"""}
+    ]
+
+# Ajout de style CSS pour mobile et espacement réduit
 st.markdown(
     """
     <style>
-    body {
-        background-color: #f5f7fa;
-    }
+    /* Réduction des marges pour mobile */
     .main {
-        background-color: white;
-        padding: 2rem;
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        max-width: 700px;
-        margin: auto;
+        padding-top: 1rem;
+        padding-bottom: 0.5rem;
     }
-    textarea, input[type="text"], input[type="submit"], button {
-        border-radius: 10px;
+    /* Réduction des espacements */
+    h1 {
+        margin-bottom: 0.5rem;
     }
-    button[kind="primary"] {
-        border-radius: 10px;
-        background-color: #4CAF50;
-        color: white;
+    p {
+        margin-top: 0rem;
+        margin-bottom: 0.5rem;
+        font-size: 16px;
+    }
+    hr {
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Afficher le logo centré
+# Logo centré
 st.markdown(
     """
     <div style='text-align: center;'>
-        <img src="https://raw.githubusercontent.com/tche55/gpt-psy-demo/main/logo.png" 
-             width="180" 
-             style="border-radius: 50%; object-fit: cover; object-position: center top; height: 180px; width: 180px;">
+        <img src="https://raw.githubusercontent.com/tche55/gpt-psy-demo/main/logo.png"
+             width="160" style="border-radius: 50%; object-fit: cover; object-position: center top;">
     </div>
     """,
     unsafe_allow_html=True
 )
 
-# Initialisation de session_state
-if "prompt" not in st.session_state:
-    st.session_state.prompt = ""
-if "response" not in st.session_state:
-    st.session_state.response = None
+# Titre centré
+st.markdown(
+    """
+    <h1 style='text-align: center;'>Audrey - votre PSY</h1>
+    """,
+    unsafe_allow_html=True
+)
 
-# Zone principale
-with st.container():
-    st.title("Audrey - votre PSY du travail")
-    st.markdown("---")
+# Sous-titre centré juste en dessous sans grand espace
+st.markdown(
+    """
+    <p style='text-align: center; font-size:14px; color: gray; margin-top:0;'>Réalisé par <b>SYTEC</b>, votre partenaire Digital et IA en Nouvelle-Aquitaine.</p>
+    """,
+    unsafe_allow_html=True
+)
 
-    st.write("""
-    Un espace d'écoute, de réflexion et de soutien pour votre développement personnel et professionnel. 
-    Posez vos questions librement, en toute bienveillance. Je ferai le maximum pour vous aider.
-    """)
+st.markdown("---")
 
-    # Champ de saisie
-    st.text_area(
-        "Exprimez ici vos préoccupations, doutes ou envies de réflexion :",
-        key="prompt"
-    )
+# Texte d'introduction optimisé
+st.markdown(
+    """
+    <p>Un espace d'écoute, de réflexion et de soutien pour votre développement personnel et professionnel.
+    Posez vos questions librement <b>ADRIEN</b>, en toute bienveillance. Je ferai le maximum pour vous aider.</p>
+    """,
+    unsafe_allow_html=True
+)
 
-    if st.button("Envoyer"):
-        if st.session_state.prompt.strip():
-            with st.spinner("Le thérapeute réfléchit avec vous..."):
-                response = client.chat.completions.create(
-                    model="gpt-3.5-turbo",
-                    messages=[
-                        {"role": "system", "content": """
-Tu es un thérapeute virtuel fictif, expert en psychologie du travail et en développement personnel, conçu pour accompagner les utilisateurs dans leur réflexion autour de leur vie professionnelle, leur épanouissement personnel et leurs défis de carrière.
-Toutes tes réponses doivent être rédigées en français, avec un ton bienveillant, respectueux, calme et encourageant.
-"""}
-                        ,
-                        {"role": "user", "content": st.session_state.prompt}
-                    ],
-                    max_tokens=700
-                )
-                st.session_state.response = response.choices[0].message.content
+# Affichage de la conversation (sans afficher le premier message system)
+for message in st.session_state.messages[1:]:
+    with st.chat_message(message["role"]):
+        st.write(message["content"])
 
-            # Reset du prompt et rafraîchissement de la page
-            st.session_state.prompt = ""
-            st.experimental_rerun()
-        else:
-            st.error("Merci de saisir un message avant d'envoyer.")
+# Champ de saisie utilisateur
+user_input = st.chat_input("Exprimez votre ressenti, une question, un doute...")
 
-# Affichage de la réponse s'il y en a une
-if st.session_state.response:
-    st.success(st.session_state.response)
+if user_input:
+    st.session_state.messages.append({"role": "user", "content": user_input})
+
+    with st.spinner("Audrey réfléchit à votre situation..."):
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=st.session_state.messages,
+            max_tokens=700
+        )
+        assistant_message = response.choices[0].message.content
+
+    st.session_state.messages.append({"role": "assistant", "content": assistant_message})
+
+    with st.chat_message("assistant"):
+        st.write(assistant_message)
