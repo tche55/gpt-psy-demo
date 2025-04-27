@@ -75,13 +75,15 @@ def inject_custom_js():
     st.markdown(
         """
         <script>
-        window.onload = function() {
-            window.scrollTo(0, 0);
-        };
+        // Attendre un peu que tout charge avant de scroller tout en haut
+        setTimeout(function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 300);
         </script>
         """,
         unsafe_allow_html=True
     )
+
     
 def display_header():
     st.markdown(
