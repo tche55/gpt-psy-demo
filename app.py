@@ -44,20 +44,13 @@ st.markdown(
 )
 
 # Logo centré
+# Afficher le logo centré
 st.markdown(
     """
     <div style='text-align: center;'>
-        <div style="
-            width: 180px;
-            height: 180px;
-            overflow: hidden;
-            border-radius: 50%;
-            margin: auto;
-            position: relative;
-            background: #f0f0f0;">
-            <img src="https://raw.githubusercontent.com/tche55/gpt-psy-demo/main/logo.png"
-                 style="width: 180px; height: auto; object-fit: cover; position: absolute; top: -40px;">
-        </div>
+        <img src="https://raw.githubusercontent.com/tche55/gpt-psy-demo/main/logo.png" 
+             width="180" 
+             style="border-radius: 50%; object-fit: cover; object-position: center top; height: 180px; width: 180px;">
     </div>
     """,
     unsafe_allow_html=True
