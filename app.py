@@ -102,7 +102,7 @@ def generate_response(user_message):
 
     with st.spinner("Audrey réfléchit à votre situation..."):
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-3.5-turbo",
             messages=st.session_state.messages,
             max_tokens=700
         )
