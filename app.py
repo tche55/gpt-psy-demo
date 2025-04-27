@@ -47,12 +47,24 @@ st.markdown(
 st.markdown(
     """
     <div style='text-align: center;'>
-        <img src="https://raw.githubusercontent.com/tche55/gpt-psy-demo/main/logo.png"
-             width="160" style="border-radius: 50%; object-fit: cover; object-position: center top;">
+        <div style="
+            width: 160px;
+            height: 160px;
+            overflow: hidden;
+            border-radius: 50%;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f0f0;">
+            <img src="https://raw.githubusercontent.com/tche55/gpt-psy-demo/main/logo.png"
+                 style="width: 200px; height: auto; object-fit: cover; object-position: center;">
+        </div>
     </div>
     """,
     unsafe_allow_html=True
 )
+
 
 # Titre centré
 st.markdown(
